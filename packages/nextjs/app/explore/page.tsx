@@ -20,7 +20,7 @@ const Explore: NextPage = () => {
               <h2>{name}</h2>
               <p>{description}</p>
               <p>Location: {location}</p>
-              <p>Position: {pos.toString()}</p>
+              <p>Distance: {pos.toString()}</p>
             </Link>
           </li>
         ))}

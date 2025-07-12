@@ -22,8 +22,7 @@ function Order() {
 
   const totalPrice = selectedMenu.reduce((acc, menu) => acc + BigInt(menu.price), BigInt(0));
 
-  // TODO: 배송비 계산 로직 - 임시로 고정값 사용
-  const deliveryFee = BigInt(1000); // 1000 wei
+  const deliveryFee = BigInt(1000) * (store?.pos ?? BigInt(1)); // 1000 won
   const totalValue = totalPrice + deliveryFee;
 
   const handleOrder = async () => {
@@ -64,7 +63,7 @@ function Order() {
                   <h4 className="font-medium">{menu.name}</h4>
                   <p className="text-sm text-gray-600">Index: {menu.index.toString()}</p>
                 </div>
-                <span className="font-semibold">{menu.price.toString()} wei</span>
+                <span className="font-semibold">{menu.price.toString()} 원</span>
               </li>
             ))}
           </ul>
@@ -75,16 +74,16 @@ function Order() {
       <div className="bg-gray-50 p-4 rounded-lg mb-6">
         <div className="flex justify-between items-center mb-2">
           <span>메뉴 총액:</span>
-          <span>{totalPrice.toString()} wei</span>
+          <span>{totalPrice.toString()} 원</span>
         </div>
         <div className="flex justify-between items-center mb-2">
           <span>배송비:</span>
-          <span>{deliveryFee.toString()} wei</span>
+          <span>{deliveryFee.toString()} 원</span>
         </div>
         <hr className="my-2" />
         <div className="flex justify-between items-center font-bold text-lg">
           <span>총 결제금액:</span>
-          <span>{totalValue.toString()} wei</span>
+          <span>{totalValue.toString()} 원</span>
         </div>
       </div>
 
@@ -98,7 +97,7 @@ function Order() {
             : "bg-secondary text-white hover:bg-secondary/90"
         }`}
       >
-        {isOrdering ? "주문 중..." : `${totalValue.toString()} wei로 주문하기`}
+        {isOrdering ? "주문 중..." : `${totalValue.toString()} 원 주문하기`}
       </button>
 
       <div className="mt-4 text-center">
