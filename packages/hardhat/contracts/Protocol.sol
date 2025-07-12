@@ -51,7 +51,7 @@ struct Delivery_Request {
 
 contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // 지불 토큰 주소
-    address public pay_token_address;
+    uint256 public wti_price;
 
     Store[] public stores;
     mapping(address => User) public userMap;
@@ -69,9 +69,88 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // delivery request index
     uint256[] public pending_delivery;
 
-    function initialize(address _pay_token_address) public initializer {
+    function initialize() public initializer {
         __Ownable_init(msg.sender);
-        pay_token_address = _pay_token_address;
+
+        // --- 목(Mock) 데이터 초기화 ---
+        initializeMockData();
+
+        wti_price = 1;
+
+    }
+
+    function initializeMockData() public onlyOwner {
+        // 1. 유저 데이터 등록
+        userMap[0xc638cfF5173bE947494207FE67B76460EBeaA23f] = User({
+            name: unicode"김철수",
+            addr: 0xc638cfF5173bE947494207FE67B76460EBeaA23f,
+            location: unicode"서울시 강남구 역삼동",
+            pos: 1
+        });
+
+        // 2. 상점 데이터 등록
+        storeMap[0xc638cfF5173bE947494207FE67B76460EBeaA23f] = Store({
+            addr: 0xc638cfF5173bE947494207FE67B76460EBeaA23f,
+            location: unicode"서울시 강남구 테헤란로",
+            pos: 2,
+            name: unicode"황금반점",
+            description: unicode"전통 중화요리 전문점, 30년 내공의 맛"
+        });
+        storeMap[0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7] = Store({
+            addr: 0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7,
+            location: unicode"서울시 서초구 반포동",
+            pos: 3,
+            name: unicode"맛나분식",
+            description: unicode"추억의 맛, 떡볶이와 김밥"
+        });
+
+        // 3. 배달원 데이터 등록
+        deliverMap[0x1FfF36fABa6Bd6507a08d3296ef60e4fd6b15095] = Deliver({
+            addr: 0x1FfF36fABa6Bd6507a08d3296ef60e4fd6b15095,
+            name: unicode"스피드맨"
+        });
+
+        // 4. 메뉴 데이터 등록 (storeMenuMap에 push)
+        storeMenuMap[0xc638cfF5173bE947494207FE67B76460EBeaA23f].push(Menu({
+            index: 0,
+            store_address: 0xc638cfF5173bE947494207FE67B76460EBeaA23f,
+            name: unicode"짜장면",
+            description: unicode"기본에 충실한 짜장면",
+            price: 7000,
+            image_url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA0MjlfMTM1%2FMDAxNzQ1OTAwMTQ0Njk2.YtBTUQUwQVnUBLEomgr-PggTodTsna6ThCbVKRWhG4gg.tt8bP14sKO91Ui99Y0GBU9NzFGFDcSJrLp_LtL9EyY0g.PNG%2FChatGPT_Image_2025%25B3%25E2_4%25BF%25F9_29%25C0%25CF_%25BF%25C0%25C8%25C4_01_14_08.png&type=sc960_832"
+        }));
+        storeMenuMap[0xc638cfF5173bE947494207FE67B76460EBeaA23f].push(Menu({
+            index: 1,
+            store_address: 0xc638cfF5173bE947494207FE67B76460EBeaA23f,
+            name: unicode"짬뽕",
+            description: unicode"얼큰하고 시원한 짬뽕",
+            price: 9000,
+            image_url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDEyMTZfMTcx%2FMDAxNzM0MzA2NjYwODYw.hQ2hOniGyiUfXq_JyZTkU6kuqC0qp0SBafvJtWd1sK0g.Nv3QClhLyI0xeh-iw4gGKrj6-M0tu64E5hxDquUCyPIg.JPEG%2FIMG_5899.jpg&type=sc960_832"
+        }));
+        storeMenuMap[0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7].push(Menu({
+            index: 0,
+            store_address: 0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7,
+            name: unicode"떡볶이",
+            description: unicode"매콤달콤한 국민 간식",
+            price: 5000,
+            image_url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA1MDFfNDcg%2FMDAxNzQ2MDQ3ODg5ODY1.BbklCP5HUAZwfdoLMC5vncldEe3nXtkMKXy0_UPuIQ4g.6f7xOtSDBBKSf--CMP9LBYVOKD7VD9-TYFbVzJv530og.PNG%2Fcb914beb-a20b-49c6-beee-6bbedea5dde1.png&type=sc960_832"
+        }));
+        storeMenuMap[0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7].push(Menu({
+            index: 1,
+            store_address: 0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7,
+            name: unicode"김밥",
+            description: unicode"속이 꽉 찬 맛있는 김밥",
+            price: 3000,
+            image_url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDEyMjFfMjE1%2FMDAxNzM0NzgwNzE1OTM4.usw9AVVnHxzFSVsRIf8cunnnrcrPlp4h7Kb_2Q2yKdsg.5ug6RW5y_p5xdHKahorGms0OTAceY0Kghoob9qszjNMg.JPEG%2F%25B1%25E8%25B9%25E4_024.jpg&type=sc960_832"
+        }));
+        storeMenuMap[0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7].push(Menu({
+            index: 2,
+            store_address: 0x9206a132Ae7Ffa929f50EF8551c21B387f5234C7,
+            name: unicode"순대",
+            description: unicode"쫄깃하고 고소한 순대",
+            price: 4000,
+            image_url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fshopping.phinf.naver.net%2Fmain_5330441%2F53304411993.3.20250306104652.jpg&type=sc960_832"
+        }));
     }
 
     function registerUser(string calldata name, string calldata location, int256 pos) external override {
