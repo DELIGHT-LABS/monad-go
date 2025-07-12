@@ -30,7 +30,7 @@ const deployProtocolContract: DeployFunction = async function (hre: HardhatRunti
       execute: {
         init: {
           methodName: "initialize",
-          args: [deployer],
+          args: [],
         },
       },
     },
