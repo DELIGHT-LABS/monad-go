@@ -16,6 +16,10 @@ import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   useInitializeNativeCurrencyPrice();
 
+  const { setTheme } = useTheme();
+
+  useEffect(() => setTheme("light"), [setTheme]);
+
   return (
     <>
       <div className={`flex flex-col min-h-screen `}>
