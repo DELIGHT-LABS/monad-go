@@ -130,7 +130,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
         return storeMenuMap[store_address];
     }
 
-    function removeMenu(int256 menu_index) external override {
+    function removeMenu(uint256 menu_index) external override {
         revert("Unimplemented");
     }
     function removeUser(address user_addr) external override {

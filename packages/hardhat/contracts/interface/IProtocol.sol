@@ -3,12 +3,12 @@ pragma solidity ^0.8.0;
 
 interface IProtocol {
     // user, 가게, deliver 등록
-    function registerUser(string calldata name, string calldata location, uint256 pos) external;
-    function registerStore(string calldata name, string calldata description, string calldata location, uint256 pos) external;
+    function registerUser(string calldata name, string calldata location, int256 pos) external;
+    function registerStore(string calldata name, string calldata description, string calldata location, int256 pos) external;
     function registerDeliver(string calldata name) external;
 
     // 메뉴 등록
-    function addMenu(string calldata name, string calldata description, uint256 price, string calldata image_url) external;
+    function addMenu(string calldata name, string calldata description, int256 price, string calldata image_url) external ;
 
     // user, store, deliver, menu 제거
     function removeMenu(uint256 menu_index) external;
@@ -23,7 +23,7 @@ interface IProtocol {
 
 
     // event
-    event OrderMenu(uint256 order_index, string store_address, string user_address, int256 distance, uint256 total_price, uint256 delivery_fee);
+    event OrderMenu(uint256 order_index, address store_address, address user_address, int256 distance, int256 total_price, int256 delivery_fee);
     event ConfirmDelivery(uint256 delivery_request_index, uint256 order_index);
     event ConfirmOrder(
       address user_addr,
