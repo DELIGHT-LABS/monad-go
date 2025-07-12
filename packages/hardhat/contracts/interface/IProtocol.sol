@@ -23,11 +23,11 @@ interface IProtocol {
 
 
     // event
-    event OrderMenu(int256 order_index, int256 total_price, int256 delivery_fee);
+    event OrderMenu(int256 order_index, string store_address, string user_address, int256 distance, int256 total_price, int256 delivery_fee);
     event ConfirmDelivery(int256 delivery_request_index, int256 order_index);
     event ConfirmOrder(
       address user_addr,
-    address store_addr,
-    address deliver_addr
+      address store_addr,
+      address deliver_addr
     );
 }
