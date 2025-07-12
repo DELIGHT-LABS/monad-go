@@ -982,131 +982,8 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     Protocol: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
       abi: [
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "address",
-              name: "previousAdmin",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "newAdmin",
-              type: "address",
-            },
-          ],
-          name: "AdminChanged",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "beacon",
-              type: "address",
-            },
-          ],
-          name: "BeaconUpgraded",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "implementation",
-              type: "address",
-            },
-          ],
-          name: "Upgraded",
-          type: "event",
-        },
-        {
-          stateMutability: "payable",
-          type: "fallback",
-        },
-        {
-          inputs: [],
-          name: "admin",
-          outputs: [
-            {
-              internalType: "address",
-              name: "admin_",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "newAdmin",
-              type: "address",
-            },
-          ],
-          name: "changeAdmin",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "implementation",
-          outputs: [
-            {
-              internalType: "address",
-              name: "implementation_",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "newImplementation",
-              type: "address",
-            },
-          ],
-          name: "upgradeTo",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "newImplementation",
-              type: "address",
-            },
-            {
-              internalType: "bytes",
-              name: "data",
-              type: "bytes",
-            },
-          ],
-          name: "upgradeToAndCall",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
-        },
-        {
-          stateMutability: "payable",
-          type: "receive",
-        },
         {
           inputs: [],
           name: "InvalidInitialization",
@@ -1144,15 +1021,15 @@ const deployedContracts = {
           inputs: [
             {
               indexed: false,
-              internalType: "int256",
+              internalType: "uint256",
               name: "delivery_request_index",
-              type: "int256",
+              type: "uint256",
             },
             {
               indexed: false,
-              internalType: "int256",
+              internalType: "uint256",
               name: "order_index",
-              type: "int256",
+              type: "uint256",
             },
           ],
           name: "ConfirmDelivery",
@@ -1201,21 +1078,21 @@ const deployedContracts = {
           inputs: [
             {
               indexed: false,
-              internalType: "int256",
+              internalType: "uint256",
               name: "order_index",
-              type: "int256",
+              type: "uint256",
             },
             {
               indexed: false,
-              internalType: "string",
+              internalType: "address",
               name: "store_address",
-              type: "string",
+              type: "address",
             },
             {
               indexed: false,
-              internalType: "string",
+              internalType: "address",
               name: "user_address",
-              type: "string",
+              type: "address",
             },
             {
               indexed: false,
@@ -1259,6 +1136,46 @@ const deployedContracts = {
           type: "event",
         },
         {
+          inputs: [],
+          name: "GetOrders",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "index",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256[]",
+                  name: "menu",
+                  type: "uint256[]",
+                },
+                {
+                  internalType: "int256",
+                  name: "total_price",
+                  type: "int256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "request_index",
+                  type: "uint256",
+                },
+                {
+                  internalType: "int256",
+                  name: "delivery_fee",
+                  type: "int256",
+                },
+              ],
+              internalType: "struct Order[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -1289,9 +1206,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "int256",
+              internalType: "uint256",
               name: "delivery_request_index",
-              type: "int256",
+              type: "uint256",
             },
           ],
           name: "approveDelivery",
@@ -1302,14 +1219,14 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "int256",
+              internalType: "uint256",
               name: "order_index",
-              type: "int256",
+              type: "uint256",
             },
           ],
           name: "confirmOrder",
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
           type: "function",
         },
         {
@@ -1344,7 +1261,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "deliveryRequestMap",
+          name: "deliveryRequests",
           outputs: [
             {
               internalType: "uint256",
@@ -1483,9 +1400,14 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "int256[]",
+              internalType: "address",
+              name: "store_address",
+              type: "address",
+            },
+            {
+              internalType: "uint256[]",
               name: "menu_index",
-              type: "int256[]",
+              type: "uint256[]",
             },
           ],
           name: "order",
@@ -1495,6 +1417,11 @@ const deployedContracts = {
         },
         {
           inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
             {
               internalType: "uint256",
               name: "",
@@ -1514,9 +1441,43 @@ const deployedContracts = {
               type: "int256",
             },
             {
-              internalType: "int256",
+              internalType: "uint256",
               name: "request_index",
+              type: "uint256",
+            },
+            {
+              internalType: "int256",
+              name: "delivery_fee",
               type: "int256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "orders",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+            {
+              internalType: "int256",
+              name: "total_price",
+              type: "int256",
+            },
+            {
+              internalType: "uint256",
+              name: "request_index",
+              type: "uint256",
             },
             {
               internalType: "int256",
@@ -1639,9 +1600,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "int256",
+              internalType: "uint256",
               name: "menu_index",
-              type: "int256",
+              type: "uint256",
             },
           ],
           name: "removeMenu",
@@ -1893,29 +1854,23 @@ const deployedContracts = {
           stateMutability: "view",
           type: "function",
         },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_logic",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "admin_",
-              type: "address",
-            },
-            {
-              internalType: "bytes",
-              name: "_data",
-              type: "bytes",
-            },
-          ],
-          stateMutability: "payable",
-          type: "constructor",
-        },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        addMenu: "contracts/interface/IProtocol.sol",
+        approveDelivery: "contracts/interface/IProtocol.sol",
+        confirmOrder: "contracts/interface/IProtocol.sol",
+        order: "contracts/interface/IProtocol.sol",
+        registerDeliver: "contracts/interface/IProtocol.sol",
+        registerStore: "contracts/interface/IProtocol.sol",
+        registerUser: "contracts/interface/IProtocol.sol",
+        removeDelivery: "contracts/interface/IProtocol.sol",
+        removeMenu: "contracts/interface/IProtocol.sol",
+        removeStore: "contracts/interface/IProtocol.sol",
+        removeUser: "contracts/interface/IProtocol.sol",
+        owner: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        renounceOwnership: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        transferOwnership: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+      },
     },
     Protocol_Implementation: {
       address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",

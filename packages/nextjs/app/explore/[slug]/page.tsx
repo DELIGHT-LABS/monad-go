@@ -1,7 +1,6 @@
 "use client";
 
 import { use, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useMenu } from "~~/hooks/useMenu";
 import { useStoreList } from "~~/hooks/useStoreList";
@@ -11,9 +10,9 @@ interface Props {
 }
 
 export interface Menu {
-  index: bigint;
+  index: string;
   name: string;
-  price: bigint;
+  price: number;
 }
 
 const Store = ({ params }: Props) => {
@@ -29,7 +28,9 @@ const Store = ({ params }: Props) => {
     <>
       <div className="text-center mt-8 bg-primary p-10">
         <h1 className="text-4xl my-0">{store?.name}</h1>
+      </div>
 
+      <div className="flex flex-col items-center">
         <ol className="list-decimal list-inside">
           {menuList?.map(({ description, image_url, index, name, price }) => (
             <li key={index} className="my-2">
@@ -39,9 +40,9 @@ const Store = ({ params }: Props) => {
                   setSelectedMenu(prev => [
                     ...prev,
                     {
-                      index,
+                      index: index.toString(),
                       name,
-                      price,
+                      price: Number(price),
                     },
                   ])
                 }
@@ -49,7 +50,7 @@ const Store = ({ params }: Props) => {
                 <h2>{name}</h2>
                 <p>{description}</p>
                 <p>Price: {price}</p>
-                {image_url && <Image src={image_url} alt={name} className="w-32 h-32 object-cover" />}
+                {image_url && <img src={image_url} alt={name} className="w-32 h-32 object-cover" />}
               </button>
             </li>
           ))}
@@ -58,7 +59,7 @@ const Store = ({ params }: Props) => {
         <div className="fixed bottom-0 left-0 right-0 bg-primary p-4 text-center flex justify-between">
           <div>
             <div>selected {selectedMenu.length}</div>
-            <div>total price: {selectedMenu.reduce((acc, cur) => acc + cur.price, BigInt(0))}</div>
+            <div>total price: {selectedMenu.reduce((acc, cur) => acc + Number(cur.price), 0)}</div>
           </div>
           <Link
             href={{
