@@ -53,7 +53,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // 지불 토큰 주소
     address public pay_token_address;
 
-    address[] public stores;
+    Store[] public stores;
     mapping(address => User) public userMap;
     mapping(address => Store) public storeMap;
     mapping(address => Deliver) public deliverMap;
@@ -85,7 +85,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
         });
     }
 
-    function getStores() public view returns(address[] memory) {
+    function getStores() public view returns(Store[] memory) {
         return stores;
     }
 
