@@ -31,7 +31,7 @@ function Order() {
     try {
       setIsOrdering(true);
       const menuIndexes = selectedMenu.map(menu => BigInt(menu.index));
-      await order(menuIndexes, totalValue);
+      await order(storeAddress ?? "", menuIndexes, totalValue);
     } catch (error) {
       console.error("Order failed:", error);
     } finally {

@@ -8,10 +8,10 @@ export function useOrder() {
     contractName: "Protocol",
   });
 
-  const order = (menuList: bigint[], totalValue: bigint) =>
+  const order = (storeAddress: string, menuList: bigint[], totalValue: bigint) =>
     writeContractAsync({
       functionName: "order",
-      args: [menuList],
+      args: [storeAddress, menuList],
       value: totalValue,
     });
 
