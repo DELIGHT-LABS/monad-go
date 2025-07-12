@@ -53,6 +53,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // 지불 토큰 주소
     address public pay_token_address;
 
+    address[] public stores;
     mapping(address => User) public userMap;
     mapping(address => Store) public storeMap;
     mapping(address => Deliver) public deliverMap;
@@ -74,8 +75,20 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     }
 
     function registerUser(string calldata name, string calldata location, int256 pos) external override {
-        revert("Unimplemented");
+        require(bytes(userMap[msg.sender].name).length == 0, "User already registered");
+        
+        userMap[msg.sender] = User({
+            name: name,
+            addr: msg.sender,
+            location: location,
+            pos: pos
+        });
     }
+
+    function getStores() public view returns(address[] memory) {
+        return stores;
+    }
+
     function registerStore(string calldata name, string calldata description, string calldata location, int256 pos) external override {
         revert("Unimplemented");
     }
