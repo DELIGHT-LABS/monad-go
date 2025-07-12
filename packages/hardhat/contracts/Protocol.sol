@@ -20,7 +20,7 @@ struct Store {
 }
 
 struct Menu {
-    int256 index;
+    uint256 index;
     address store_address;
     string name;
     string description;
@@ -29,7 +29,7 @@ struct Menu {
 }
 
 struct Order {
-    int256 index;
+    uint256 index;
     int256[] menu;
     int256 total_price;
     int256 request_index;
@@ -42,11 +42,11 @@ struct Deliver {
 }
 
 struct Delivery_Request {
-    int256 index;
+    uint256 index;
     address user_addr;
     address store_addr;
     address deliver_addr;
-    int256 order_index;
+    uint256 order_index;
 }
 
 contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
@@ -61,13 +61,13 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     mapping(address => Menu[]) public storeMenuMap;
 
     // 요청한 유저의 주소 -> delivery_request index[]
-    mapping(address => int256[]) public userOrderMap;
+    mapping(address => uint256[]) public userOrderMap;
     // order index -> order
-    mapping(int256 => Order) public orderMap;
+    mapping(uint256 => Order) public orderMap;
     // delivery_requset index
-    mapping(int256 => Delivery_Request) public deliveryRequestMap;
+    mapping(uint256 => Delivery_Request) public deliveryRequestMap;
     // delivery request index
-    int256[] public pending_delivery;
+    uint256[] public pending_delivery;
 
     function initialize(address _pay_token_address) public initializer {
         __Ownable_init(msg.sender);
@@ -90,14 +90,44 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     }
 
     function registerStore(string calldata name, string calldata description, string calldata location, int256 pos) external override {
-        revert("Unimplemented");
+        require(bytes(storeMap[msg.sender].name).length == 0, "Store already registered");
+
+        storeMap[msg.sender] = Store({
+            name: name,
+            description: description,
+            addr: msg.sender,
+            location: location,
+            pos: pos
+        });
+
+        stores.push(storeMap[msg.sender]);
     }
     function registerDeliver(string calldata name) external override {
-        revert("Unimplemented");
+        require(bytes(deliverMap[msg.sender].name).length == 0, "Deliver already registered");
+
+        deliverMap[msg.sender] = Deliver({
+            addr: msg.sender,
+            name: name
+        });
     }
+
     function addMenu(string calldata name, string calldata description, int256 price, string calldata image_url) external override {
-        revert("Unimplemented");
+        require(bytes(storeMap[msg.sender].name).length != 0, "Not found stores");
+
+        storeMenuMap[msg.sender].push(Menu({
+            index: storeMenuMap[msg.sender].length+1,
+            name: name,
+            store_address: msg.sender,
+            description: description,
+            price: price,
+            image_url: image_url
+        }));
     }
+
+    function getStoreMenu(address store_address) public view returns(Menu[] memory) {
+        return storeMenuMap[store_address];
+    }
+
     function removeMenu(int256 menu_index) external override {
         revert("Unimplemented");
     }
