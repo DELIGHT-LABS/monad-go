@@ -3,28 +3,28 @@ pragma solidity ^0.8.0;
 
 interface IProtocol {
     // user, 가게, deliver 등록
-    function registerUser(string calldata name, string calldata location, int256 pos) external;
-    function registerStore(string calldata name, string calldata description, string calldata location, int256 pos) external;
+    function registerUser(string calldata name, string calldata location, uint256 pos) external;
+    function registerStore(string calldata name, string calldata description, string calldata location, uint256 pos) external;
     function registerDeliver(string calldata name) external;
 
     // 메뉴 등록
-    function addMenu(string calldata name, string calldata description, int256 price, string calldata image_url) external;
+    function addMenu(string calldata name, string calldata description, uint256 price, string calldata image_url) external;
 
     // user, store, deliver, menu 제거
-    function removeMenu(int256 menu_index) external;
+    function removeMenu(uint256 menu_index) external;
     function removeUser(address user_addr) external;
     function removeStore(address user_addr) external;
     function removeDelivery(address user_addr) external;
 
-    function order(int256[] calldata menu_index) external payable;
-    function approveDelivery(int256 delivery_request_index) external;
+    function order(address store_address,uint256[] memory menu_index) external payable;
+    function approveDelivery(uint256 delivery_request_index) external;
 
-    function confirmOrder(int256 order_index) external;
+    function confirmOrder(uint256 order_index) external;
 
 
     // event
-    event OrderMenu(int256 order_index, string store_address, string user_address, int256 distance, int256 total_price, int256 delivery_fee);
-    event ConfirmDelivery(int256 delivery_request_index, int256 order_index);
+    event OrderMenu(uint256 order_index, string store_address, string user_address, int256 distance, uint256 total_price, uint256 delivery_fee);
+    event ConfirmDelivery(uint256 delivery_request_index, uint256 order_index);
     event ConfirmOrder(
       address user_addr,
       address store_addr,
