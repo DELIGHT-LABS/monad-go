@@ -20,4 +20,14 @@ interface IProtocol {
     function approveDelivery(int256 delivery_request_index) external;
 
     function confirmOrder(int256 order_index) external;
+
+
+    // event
+    event OrderMenu(int256 order_index, int256 total_price, int256 delivery_fee);
+    event ConfirmDelivery(int256 delivery_request_index, int256 order_index);
+    event ConfirmOrder(
+      address user_addr,
+    address store_addr,
+    address deliver_addr
+    );
 }

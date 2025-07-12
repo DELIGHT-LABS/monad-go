@@ -31,6 +31,7 @@ struct Order {
     int256[] menu;
     int256 total_price;
     int256 request_index;
+    int256 delivery_fee;
 }
 
 struct Deliver {
