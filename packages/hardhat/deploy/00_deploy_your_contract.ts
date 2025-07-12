@@ -24,16 +24,7 @@ const deployProtocolContract: DeployFunction = async function (hre: HardhatRunti
 
   await deploy("Protocol", {
     from: deployer,
-    proxy: {
-      owner: deployer,
-      proxyContract: "OpenZeppelinTransparentProxy",
-      execute: {
-        init: {
-          methodName: "initialize",
-          args: [],
-        },
-      },
-    },
+    args: [],
     log: true,
     autoMine: true,
   });
