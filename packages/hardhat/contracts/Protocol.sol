@@ -30,9 +30,9 @@ struct Menu {
 
 struct Order {
     uint256 index;
-    int256[] menu;
+    uint256[] menu;
     int256 total_price;
-    int256 request_index;
+    uint256 request_index;
     int256 delivery_fee;
 }
 
@@ -63,9 +63,11 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // 요청한 유저의 주소 -> delivery_request index[]
     mapping(address => uint256[]) public userOrderMap;
     // order index -> order
-    mapping(uint256 => Order) public orderMap;
+    Order[] public orders;
+    mapping(address => Order[]) public orderMap;
     // delivery_requset index
-    mapping(uint256 => Delivery_Request) public deliveryRequestMap;
+    Delivery_Request[] public deliveryRequests;
+    // mapping(uint256 => Delivery_Request) public deliveryRequestMap;
     // delivery request index
     uint256[] public pending_delivery;
 
@@ -194,7 +196,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
         require(bytes(storeMap[msg.sender].name).length != 0, "Not found stores");
 
         storeMenuMap[msg.sender].push(Menu({
-            index: storeMenuMap[msg.sender].length+1,
+            index: storeMenuMap[msg.sender].length,
             name: name,
             store_address: msg.sender,
             description: description,
@@ -207,7 +209,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
         return storeMenuMap[store_address];
     }
 
-    function removeMenu(int256 menu_index) external override {
+    function removeMenu(uint256 menu_index) external override {
         revert("Unimplemented");
     }
     function removeUser(address user_addr) external override {
@@ -219,13 +221,58 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     function removeDelivery(address user_addr) external override {
         revert("Unimplemented");
     }
-    function order(int256[] calldata menu_index) external payable override {
-        revert("Unimplemented");
+    
+    function order(address store_address, uint256[] memory menu_index) external payable override {
+        require(bytes(userMap[msg.sender].name).length != 0, "Not found user");
+        require(bytes(storeMap[store_address].name).length != 0, "Not found store");
+
+        uint256 order_ind = orders.length;
+
+        Delivery_Request memory delivery_request = Delivery_Request({
+            index: deliveryRequests.length,
+            order_index: orders.length,
+            user_addr: msg.sender,
+            store_addr: store_address,
+            deliver_addr: address(0)
+        });
+
+        int256 total_price = 0;
+        for (uint256 index = 0; index <= menu_index.length; index++){
+            if (storeMenuMap[store_address].length > 0 && bytes(storeMenuMap[store_address][index].name).length != 0){
+                Menu memory menu = storeMenuMap[store_address][index];
+                total_price += menu.price;
+            }
+        }
+
+        // delivery fee
+        int256 distance = (storeMap[store_address].pos - userMap[msg.sender].pos);
+        int256 delivery_fee = distance * 1;
+
+        orders.push(Order({
+            index: orders.length,
+            menu: menu_index,
+            total_price: total_price,
+            delivery_fee: delivery_fee,
+            request_index: delivery_request.index
+        }));
+
+        orderMap[msg.sender].push(orders[order_ind]);
+
+        emit OrderMenu(order_ind, store_address, msg.sender, distance, total_price, delivery_fee);
     }
-    function approveDelivery(int256 delivery_request_index) external override {
-        revert("Unimplemented");
+
+    function GetOrders() external returns(Order[] memory){
+        return  orderMap[msg.sender];
     }
-    function confirmOrder(int256 order_index) external override {
-        revert("Unimplemented");
+
+    function approveDelivery(uint256 delivery_request_index) external override {
+        deliveryRequests[delivery_request_index].deliver_addr = msg.sender;
+
+        emit ConfirmDelivery(delivery_request_index, deliveryRequests[delivery_request_index].index);
+    }
+
+    function confirmOrder(uint256 order_index) external payable override {
+        // orders[order_index].request_index
+        // payable().transfer()
     }
 }
