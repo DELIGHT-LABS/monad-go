@@ -41,8 +41,9 @@ describe("YourContract", function () {
       // expect(await protocolContract.greeting()).to.equal("Building Unstoppable Apps!!!");
       await protocolContract.addMenu("test food", "test food", 100, "http://127.0.0.1");
 
-      // expect().to.exist;
-      console.log(await protocolContract.storeMenuMap(ownerAddress));
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      expect(await protocolContract.getStoreMenu(ownerAddress)).to.exist;
+      console.log(await protocolContract.getStoreMenu(ownerAddress));
     });
   });
 });

@@ -124,6 +124,10 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
         }));
     }
 
+    function getStoreMenu(address store_address) public view returns(Menu[] memory) {
+        return storeMenuMap[store_address];
+    }
+
     function removeMenu(int256 menu_index) external override {
         revert("Unimplemented");
     }
