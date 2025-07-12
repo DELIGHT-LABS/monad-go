@@ -38,6 +38,14 @@ export function useOrder() {
       logs.forEach(log => {
         const { order_index, delivery_fee, distance, user_address, store_address } = log.args;
 
+        console.log("OrderMenu event:", {
+          orderIndex: order_index,
+          deliveryFee: delivery_fee,
+          distance,
+          userAddress: user_address,
+          storeAddress: store_address,
+        });
+
         if (!order_index) return;
 
         setCalls(prevOrders => [
