@@ -272,7 +272,8 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     }
 
     function confirmOrder(uint256 order_index) external payable override {
-        // orders[order_index].request_index
-        // payable().transfer()
+        Delivery_Request memory dr = deliveryRequests[orders[order_index].request_index];
+        payable(dr.store_addr).transfer(uint256(orders[order_index].total_price));
+        payable(dr.deliver_addr).transfer(uint256(orders[order_index].delivery_fee));
     }
 }
