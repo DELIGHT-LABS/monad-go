@@ -1,5 +1,7 @@
 pragma solidity ^0.8.0;
 
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./interface/IProtocol.sol";
 
 struct User {
@@ -47,10 +49,9 @@ struct Delivery_Request {
     int256 order_index;
 }
 
-contract Protocol is IProtocol {
+contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     // 지불 토큰 주소
     address public pay_token_address;
-    address public owner;
 
     mapping(address => User) public userMap;
     mapping(address => Store) public storeMap;
@@ -63,6 +64,11 @@ contract Protocol is IProtocol {
     mapping(int256 => Delivery_Request) public deliveryRequestMap;
     // delivery request index
     int256[] public pending_delivery;
+
+    function initialize(address _pay_token_address) public initializer {
+        __Ownable_init(msg.sender);
+        pay_token_address = _pay_token_address;
+    }
 
     function registerUser(string calldata name, string calldata location, int256 pos) external override {
         revert("Unimplemented");
