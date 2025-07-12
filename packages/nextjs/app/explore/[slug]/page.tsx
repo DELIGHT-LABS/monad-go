@@ -26,19 +26,26 @@ const Store = ({ params }: Props) => {
 
   return (
     <>
-      <div className="text-center mt-8 bg-primary p-10">
-        <h1 className="text-4xl my-0">{store?.name}</h1>
+      {/* Store Header */}
+      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-16">
+        <div className="container mx-auto px-6 text-center">
+          <h1 className="text-4xl font-bold">{store?.name || "매장 정보"}</h1>
+          <p className="text-orange-100 mt-2">{store?.description}</p>
+          <p className="text-orange-100 text-sm mt-1">📍 {store?.location}</p>
+        </div>
       </div>
 
-      <div className="flex flex-col items-center">
-        <ol className="list-inside">
+      {/* Menu List */}
+      <div className="container mx-auto px-6 py-8 pb-32">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">메뉴</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {menuList?.map(({ description, image_url, index, name, price }) => (
-            <li
+            <div
               key={index}
-              className="my-2 border-2 border-secondary rounded-2xl  hover:bg-secondary rounded-2xl py-2 w-full px-20"
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
             >
               <button
-                className="text-blue-500 hover:underline "
+                className="w-full p-6 text-left hover:bg-gray-50 transition-colors duration-300"
                 onClick={() =>
                   setSelectedMenu(prev => [
                     ...prev,
@@ -50,31 +57,46 @@ const Store = ({ params }: Props) => {
                   ])
                 }
               >
-                <h2>{name}</h2>
-                <p>{description}</p>
-                <p>Price: {price}</p>
-                {image_url && <img src={image_url} alt={name} className="w-32 h-32 object-cover" />}
+                {image_url && (
+                  <img
+                    src={image_url}
+                    alt={name}
+                    width={300}
+                    height={128}
+                    className="w-full h-32 object-cover rounded-lg mb-4"
+                  />
+                )}
+                <h3 className="text-lg font-bold text-gray-800 mb-2">{name}</h3>
+                <p className="text-gray-600 text-sm mb-3">{description}</p>
+                <p className="text-xl font-bold text-orange-600">{Number(price).toLocaleString()}원</p>
               </button>
-            </li>
+            </div>
           ))}
-        </ol>
-
-        <div className="fixed bottom-0 left-0 right-0 bg-primary p-4 text-center flex justify-between">
-          <div>
-            <div>selected {selectedMenu.length}</div>
-            <div>total price: {selectedMenu.reduce((acc, cur) => acc + Number(cur.price), 0)}</div>
-          </div>
-          <Link
-            href={{
-              pathname: "/explore/order",
-              query: { slug: storeAddress, menuList: JSON.stringify(selectedMenu) },
-            }}
-            className="bg-secondary text-white px-4 py-2 rounded"
-          >
-            Order
-          </Link>
         </div>
       </div>
+
+      {/* Fixed Bottom Cart */}
+      {selectedMenu.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="text-left">
+              <div className="text-sm text-gray-600">선택된 메뉴 {selectedMenu.length}개</div>
+              <div className="text-lg font-bold text-gray-800">
+                총 {selectedMenu.reduce((acc, cur) => acc + Number(cur.price), 0).toLocaleString()}원
+              </div>
+            </div>
+            <Link
+              href={{
+                pathname: "/explore/order",
+                query: { slug: storeAddress, menuList: JSON.stringify(selectedMenu) },
+              }}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-semibold transition-colors duration-300"
+            >
+              주문하기
+            </Link>
+          </div>
+        </div>
+      )}
     </>
   );
 };
