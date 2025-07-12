@@ -19,7 +19,7 @@ interface IProtocol {
     function order(address store_address,uint256[] memory menu_index) external payable;
     function approveDelivery(uint256 delivery_request_index) external;
 
-    function confirmOrder(uint256 order_index) external;
+    function confirmOrder(uint256 order_index) external payable;
 
 
     // event

@@ -64,7 +64,7 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     mapping(address => uint256[]) public userOrderMap;
     // order index -> order
     Order[] public orders;
-    // mapping(uint256 => Order) public orderMap;
+    mapping(address => Order[]) public orderMap;
     // delivery_requset index
     Delivery_Request[] public deliveryRequests;
     // mapping(uint256 => Delivery_Request) public deliveryRequestMap;
@@ -177,13 +177,23 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
             request_index: delivery_request.index
         }));
 
+        orderMap[msg.sender].push(orders[order_ind]);
+
         emit OrderMenu(order_ind, store_address, msg.sender, distance, total_price, delivery_fee);
     }
 
-    function approveDelivery(uint256 delivery_request_index) external override {
-        revert("Unimplemented");
+    function GetOrders() external returns(Order[] memory){
+        return  orderMap[msg.sender];
     }
-    function confirmOrder(uint256 order_index) external override {
-        revert("Unimplemented");
+
+    function approveDelivery(uint256 delivery_request_index) external override {
+        deliveryRequests[delivery_request_index].deliver_addr = msg.sender;
+
+        emit ConfirmDelivery(delivery_request_index, deliveryRequests[delivery_request_index].index);
+    }
+
+    function confirmOrder(uint256 order_index) external payable override {
+        // orders[order_index].request_index
+        // payable().transfer()
     }
 }
