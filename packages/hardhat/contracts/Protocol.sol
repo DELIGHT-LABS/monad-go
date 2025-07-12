@@ -60,7 +60,10 @@ contract Protocol is IProtocol, Initializable, OwnableUpgradeable {
     mapping(address => Menu[]) public storeMenuMap;
 
     // 요청한 유저의 주소 -> delivery_request index[]
-    mapping(address => int256[]) public orderMap;
+    mapping(address => int256[]) public userOrderMap;
+    // order index -> order
+    mapping(int256 => Order) public orderMap;
+    // delivery_requset index
     mapping(int256 => Delivery_Request) public deliveryRequestMap;
     // delivery request index
     int256[] public pending_delivery;
