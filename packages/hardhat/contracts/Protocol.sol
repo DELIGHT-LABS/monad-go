@@ -62,4 +62,38 @@ contract Protocol is IProtocol {
     mapping(int256 => Delivery_Request) public deliveryRequestMap;
     // delivery request index
     int256[] public pending_delivery;
+
+    function registerUser(string calldata name, string calldata location, int256 pos) external override {
+        revert("Unimplemented");
+    }
+    function registerStore(string calldata name, string calldata description, string calldata location, int256 pos) external override {
+        revert("Unimplemented");
+    }
+    function registerDeliver(string calldata name) external override {
+        revert("Unimplemented");
+    }
+    function addMenu(string calldata name, string calldata description, int256 price, string calldata image_url) external override {
+        revert("Unimplemented");
+    }
+    function removeMenu(int256 menu_index) external override {
+        revert("Unimplemented");
+    }
+    function removeUser(address user_addr) external override {
+        revert("Unimplemented");
+    }
+    function removeStore(address user_addr) external override {
+        revert("Unimplemented");
+    }
+    function removeDelivery(address user_addr) external override {
+        revert("Unimplemented");
+    }
+    function order(int256[] calldata menu_index) external payable override {
+        revert("Unimplemented");
+    }
+    function approveDelivery(int256 delivery_request_index) external override {
+        revert("Unimplemented");
+    }
+    function confirmOrder(int256 order_index) external override {
+        revert("Unimplemented");
+    }
 }
