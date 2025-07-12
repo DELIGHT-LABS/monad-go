@@ -31,11 +31,14 @@ const Store = ({ params }: Props) => {
       </div>
 
       <div className="flex flex-col items-center">
-        <ol className="list-decimal list-inside">
+        <ol className="list-inside">
           {menuList?.map(({ description, image_url, index, name, price }) => (
-            <li key={index} className="my-2">
+            <li
+              key={index}
+              className="my-2 border-2 border-secondary rounded-2xl  hover:bg-secondary rounded-2xl py-2 w-full px-20"
+            >
               <button
-                className="text-blue-500 hover:underline"
+                className="text-blue-500 hover:underline "
                 onClick={() =>
                   setSelectedMenu(prev => [
                     ...prev,
